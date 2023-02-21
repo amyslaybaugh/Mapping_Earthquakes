@@ -55,25 +55,28 @@ let map = L.map('mapid', {
 // Pass our map layers into our layers control and add the layers control to the map.
 L.control.layers(baseMaps).addTo(map);
 
-// Then we add our 'graymap' tile layer to the map.
-//streets.addTo(map);
 
 // Accessing the Toronto airline routes GeoJSON URL.
 let torontoData = "https://raw.githubusercontent.com/amyslaybaugh/Mapping_Earthquakes/main/torontoRoutes.json";
 
+// Create a style for the lines.
+let myStyle = {
+  color: "#ffffa1",
+  weight: 2
+}
+
 // Grabbing our GeoJSON data.
 d3.json(torontoData).then(function(data) {
     console.log(data);
-    // Creating a GeoJSON layer with the retrieved data.
-  L.geoJSON(data).addTo(map);
-});
-//   // Creating a GeoJSON layer with the retrieved data.
-//   L.geoJSON(data, {
-//     //We turn each feature into a marker on the map.
-//     onEachFeature: function(features, layer) {
-//       console.log(layer);
-//       console.log(features);
-//       layer.bindPopup("Airport Code:"+ features.properties.faa + "<br>Airport Name:"+ features.properties.name);
-//     }
-// }).addTo(map);
-
+   // Creating a GeoJSON layer with the retrieved data.
+  L.geoJSON(data, {
+    style: myStyle,
+    //We turn each feature into a marker on the map.
+    onEachFeature: function(features, layer) {
+      console.log(layer);
+      console.log(features);
+      layer.bindPopup("<h3>Airline:"+ features.properties.airline + "</h3><hr><h3> Destination:"+ features.properties.dst + "</h3>");
+    }
+})
+.addTo(map);
+});    
